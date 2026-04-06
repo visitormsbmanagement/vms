@@ -66,7 +66,7 @@ The app will be available at **http://localhost:3000**.
 
 | Role    | Email              | Password   |
 |---------|--------------------|------------|
-| Admin   | admin@visitor.com  | admin123   |
+| Admin   | admin@msbdocs.com  | admin123   |
 
 Sample visitor emails for OTP login: `rahul.sharma@example.com`, `priya.patel@example.com`
 

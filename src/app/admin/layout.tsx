@@ -128,7 +128,7 @@ export default function AdminLayout({
       {/* Desktop sidebar */}
       <aside className="hidden w-64 shrink-0 border-r bg-card lg:flex lg:flex-col">
         <div className="flex h-14 items-center gap-2 px-4">
-          <Image src="/MSBDOCS-Logo-new.svg" alt="MSB Docs" width={120} height={28} />
+          <Image src="/MSBDOCS-Logo-new.svg" alt="MSB Docs" width={120} height={20} style={{ height: 'auto' }} />
         </div>
         <Separator />
         <div className="flex flex-1 flex-col gap-2 p-3">
@@ -160,7 +160,7 @@ export default function AdminLayout({
             <SheetContent side="left" className="w-64 p-0">
               <SheetHeader className="border-b px-4 py-3">
                 <SheetTitle className="flex items-center gap-2">
-                  <Image src="/MSBDOCS-Logo-new.svg" alt="MSB Docs" width={120} height={28} />
+                  <Image src="/MSBDOCS-Logo-new.svg" alt="MSB Docs" width={120} height={20} style={{ height: 'auto' }} />
                 </SheetTitle>
               </SheetHeader>
               <div className="flex flex-1 flex-col gap-2 p-3">
@@ -179,7 +179,7 @@ export default function AdminLayout({
               </div>
             </SheetContent>
           </Sheet>
-          <Image src="/MSBDOCS-Logo-new.svg" alt="MSB Docs" width={110} height={26} />
+          <Image src="/MSBDOCS-Logo-new.svg" alt="MSB Docs" width={110} height={18} style={{ height: 'auto' }} />
         </header>
 
         <main className="flex-1 overflow-y-auto p-4 md:p-6 lg:p-8">

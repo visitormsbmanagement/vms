@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { writeFile, mkdir } from "fs/promises";
-import path from "path";
+import { put } from "@vercel/blob";
 
 const ALLOWED_TYPES = ["image/jpeg", "image/jpg", "image/png", "image/webp"];
 const MAX_SIZE = 5 * 1024 * 1024; // 5MB
@@ -31,19 +30,16 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const uploadsDir = path.join(process.cwd(), "public", "uploads");
-    await mkdir(uploadsDir, { recursive: true });
-
     const ext = file.name.split(".").pop() || "jpg";
-    const filename = `${Date.now()}-${Math.random().toString(36).substring(2, 8)}.${ext}`;
-    const filepath = path.join(uploadsDir, filename);
+    const filename = `uploads/${Date.now()}-${Math.random().toString(36).substring(2, 8)}.${ext}`;
 
-    const buffer = Buffer.from(await file.arrayBuffer());
-    await writeFile(filepath, buffer);
+    const blob = await put(filename, file, {
+      access: "public",
+    });
 
     return NextResponse.json({
       success: true,
-      url: `/uploads/${filename}`,
+      url: blob.url,
     });
   } catch (error) {
     console.error("Upload error:", error);

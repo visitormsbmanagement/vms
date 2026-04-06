@@ -43,11 +43,8 @@ interface NewVisitorForm {
   firstName: string;
   middleName: string;
   lastName: string;
-  gender: string;
   email: string;
   mobile: string;
-  streetAddress: string;
-  aptSuiteBuilding: string;
   purposeOfVisit: string;
   companyToVisit: string;
   personToVisit: string;
@@ -70,10 +67,9 @@ interface ExistingVisitorVisit {
   gadgetSerial: string;
 }
 
-const FORM_STEPS = ["Basic Details", "Address & Visit", "ID Proof & Photo", "Your Photo & Gadgets"];
+const FORM_STEPS = ["Basic Details", "Visit Details", "ID Proof & Photo", "Your Photo & Gadgets"];
 
 const TITLE_OPTIONS = ["Mr", "Mrs", "Ms", "Dr"];
-const GENDER_OPTIONS = ["Male", "Female", "Other", "Prefer not to say"];
 const ID_PROOF_OPTIONS = [
   "Aadhaar Card",
   "PAN Card",
@@ -167,11 +163,8 @@ function NewVisitorTab({ onSwitchTab }: { onSwitchTab: (tab: "existing") => void
       firstName: "",
       middleName: "",
       lastName: "",
-      gender: "",
       email: "",
       mobile: "",
-      streetAddress: "",
-      aptSuiteBuilding: "",
       purposeOfVisit: "",
       companyToVisit: "",
       personToVisit: "",
@@ -276,7 +269,7 @@ function NewVisitorTab({ onSwitchTab }: { onSwitchTab: (tab: "existing") => void
   const stepFields: Record<number, (keyof NewVisitorForm)[]> = {
     1: ["firstName", "lastName", "email", "mobile"],
     2: ["purposeOfVisit", "companyToVisit", "personToVisit"],
-    3: [],
+    3: ["idProofType"],
     4: [],
   };
 
@@ -358,7 +351,7 @@ function NewVisitorTab({ onSwitchTab }: { onSwitchTab: (tab: "existing") => void
       {/* Step 1: Basic Details */}
       {currentStep === 1 && (
         <div className="space-y-4">
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
             <FormField label="Title">
               <Controller
                 name="title"
@@ -369,20 +362,6 @@ function NewVisitorTab({ onSwitchTab }: { onSwitchTab: (tab: "existing") => void
                     onChange={field.onChange}
                     placeholder="Select title"
                     options={TITLE_OPTIONS}
-                  />
-                )}
-              />
-            </FormField>
-            <FormField label="Gender">
-              <Controller
-                name="gender"
-                control={control}
-                render={({ field }) => (
-                  <SelectField
-                    value={field.value}
-                    onChange={field.onChange}
-                    placeholder="Select gender"
-                    options={GENDER_OPTIONS}
                   />
                 )}
               />
@@ -553,26 +532,9 @@ function NewVisitorTab({ onSwitchTab }: { onSwitchTab: (tab: "existing") => void
         </div>
       )}
 
-      {/* Step 2: Address & Visit Details */}
+      {/* Step 2: Visit Details */}
       {currentStep === 2 && (
         <div className="space-y-4">
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-            <FormField label="Street Address">
-              <Input
-                className="h-12"
-                placeholder="Street address"
-                {...register("streetAddress")}
-              />
-            </FormField>
-            <FormField label="Apt / Suite / Building">
-              <Input
-                className="h-12"
-                placeholder="Apt, suite, building (optional)"
-                {...register("aptSuiteBuilding")}
-              />
-            </FormField>
-          </div>
-          <Separator />
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <FormField
               label="Purpose of Visit"
@@ -630,10 +592,11 @@ function NewVisitorTab({ onSwitchTab }: { onSwitchTab: (tab: "existing") => void
       {currentStep === 3 && (
         <div className="space-y-4">
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-            <FormField label="ID Proof Type">
+            <FormField label="ID Proof Type" required error={errors.idProofType?.message}>
               <Controller
                 name="idProofType"
                 control={control}
+                rules={{ required: "ID proof type is required" }}
                 render={({ field }) => (
                   <SelectField
                     value={field.value}
@@ -678,11 +641,12 @@ function NewVisitorTab({ onSwitchTab }: { onSwitchTab: (tab: "existing") => void
               Your Photo <span className="ml-0.5 text-destructive">*</span>
             </Label>
             <p className="mb-3 text-xs text-muted-foreground">
-              Take or upload a photo of yourself for visitor identification
+              Take a photo of yourself for visitor identification
             </p>
             <PhotoCapture
               onPhotoCapture={handlePhotoCapture}
               currentPhoto={photoPreview}
+              cameraOnly
             />
           </div>
 
@@ -1168,7 +1132,7 @@ export default function VisitPage() {
         {/* Header */}
         <div className="mb-8 text-center">
           <div className="mx-auto mb-4">
-            <Image src="/MSBDOCS-Logo-new.svg" alt="MSB Docs" width={180} height={42} className="mx-auto" />
+            <Image src="/MSBDOCS-Logo-new.svg" alt="MSB Docs" width={180} height={30} style={{ height: 'auto' }} className="mx-auto" />
           </div>
           <h1 className="text-3xl font-bold tracking-tight">
             Visitor Registration

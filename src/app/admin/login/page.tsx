@@ -59,7 +59,7 @@ export default function AdminLoginPage() {
       <Card className="w-full max-w-md">
         <CardHeader className="text-center">
           <div className="mx-auto mb-2">
-            <Image src="/MSBDOCS-Logo-new.svg" alt="MSB Docs" width={150} height={35} className="mx-auto" />
+            <Image src="/MSBDOCS-Logo-new.svg" alt="MSB Docs" width={150} height={25} style={{ height: 'auto' }} className="mx-auto" />
           </div>
           <CardTitle className="text-xl">Admin Login</CardTitle>
           <CardDescription>

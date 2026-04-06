@@ -15,11 +15,13 @@ import { Camera, Upload, RotateCcw, Check, User } from "lucide-react";
 interface PhotoCaptureProps {
   onPhotoCapture: (file: File) => void;
   currentPhoto: string | null;
+  cameraOnly?: boolean;
 }
 
 export function PhotoCapture({
   onPhotoCapture,
   currentPhoto,
+  cameraOnly = false,
 }: PhotoCaptureProps) {
   const [cameraOpen, setCameraOpen] = useState(false);
   const [capturedImage, setCapturedImage] = useState<string | null>(null);
@@ -106,7 +108,7 @@ export function PhotoCapture({
   );
 
   return (
-    <>
+    <div onSubmit={(e) => e.preventDefault()} onClick={(e) => e.stopPropagation()}>
       <Card className="border-dashed">
         <CardContent className="flex flex-col items-center gap-4">
           <div
@@ -140,23 +142,27 @@ export function PhotoCapture({
               <Camera className="h-4 w-4" />
               Take Photo
             </Button>
-            <Button
-              type="button"
-              variant="outline"
-              className="h-12 flex-1 gap-2 text-sm"
-              onClick={() => fileInputRef.current?.click()}
-            >
-              <Upload className="h-4 w-4" />
-              Upload Photo
-            </Button>
+            {!cameraOnly && (
+              <Button
+                type="button"
+                variant="outline"
+                className="h-12 flex-1 gap-2 text-sm"
+                onClick={() => fileInputRef.current?.click()}
+              >
+                <Upload className="h-4 w-4" />
+                Upload Photo
+              </Button>
+            )}
           </div>
-          <input
-            ref={fileInputRef}
-            type="file"
-            accept="image/*"
-            className="hidden"
-            onChange={handleFileUpload}
-          />
+          {!cameraOnly && (
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept="image/*"
+              className="hidden"
+              onChange={handleFileUpload}
+            />
+          )}
         </CardContent>
       </Card>
 
@@ -219,6 +225,6 @@ export function PhotoCapture({
           </div>
         </DialogContent>
       </Dialog>
-    </>
+    </div>
   );
 }
