@@ -1,0 +1,82 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model VisitorProfile {
+  id            String   @id @default(cuid())
+  title         String?
+  firstName     String
+  middleName    String?
+  lastName      String
+  gender        String?
+  email         String   @unique
+  mobile        String
+  streetAddress String?
+  addressLine2  String?
+  photoUrl      String?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  lastLoginAt   DateTime?
+
+  visits    VisitRecord[]
+  otpCodes  OtpCode[]
+}
+
+model VisitRecord {
+  id                     String   @id @default(cuid())
+  visitorProfileId       String
+  purposeOfVisit         String
+  companyToVisit         String
+  personToVisit          String
+  visitorTagNumber       String?
+  idProofType            String?
+  idProofNumber          String?
+  idProofPhotoUrl        String?
+  carryingPersonalGadget Boolean  @default(false)
+  gadgetType             String?
+  gadgetBrandModel       String?
+  gadgetIdentifier       String?
+  entryTime              DateTime @default(now())
+  checkInTime            DateTime?
+  checkOutTime           DateTime?
+  status                 String   @default("pending")
+  createdAt              DateTime @default(now())
+  updatedAt              DateTime @updatedAt
+
+  visitorProfile VisitorProfile @relation(fields: [visitorProfileId], references: [id])
+}
+
+model AdminUser {
+  id           String   @id @default(cuid())
+  name         String
+  email        String   @unique
+  passwordHash String
+  role         String   @default("admin")
+  createdAt    DateTime @default(now())
+}
+
+model OtpCode {
+  id               String   @id @default(cuid())
+  visitorProfileId String?
+  email            String?
+  code             String
+  expiresAt        DateTime
+  used             Boolean  @default(false)
+  createdAt        DateTime @default(now())
+
+  visitorProfile VisitorProfile? @relation(fields: [visitorProfileId], references: [id])
+}
+
+model EmailLog {
+  id        String   @id @default(cuid())
+  to        String
+  subject   String
+  body      String
+  status    String   @default("sent")
+  createdAt DateTime @default(now())
+}
